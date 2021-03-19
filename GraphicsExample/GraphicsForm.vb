@@ -67,5 +67,13 @@ Public Class GraphicsForm
         Return _lastPoint
     End Function
 
+    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
+        Me.Close()
+    End Sub
 
+    Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
+        'DisplayPictureBox.BackColor = Color.LightBlue
+        'DisplayPictureBox.BackColor = SystemColors.Control
+        DisplayPictureBox.Refresh()
+    End Sub
 End Class
