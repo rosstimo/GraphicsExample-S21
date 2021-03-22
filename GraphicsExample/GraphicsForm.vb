@@ -2,6 +2,8 @@
 Option Strict On
 
 Public Class GraphicsForm
+    'Global fields
+    Dim mainPen As New Pen(Color.Black)
 
     Private Sub GraphicsForm_Click(sender As Object, e As EventArgs) Handles Me.Click
         'DrawLine()
@@ -16,13 +18,16 @@ Public Class GraphicsForm
 
     End Sub
 
-    Sub DrawLineSegment(x1 As Integer, y1 As Integer, x2 As Integer, y2 As Integer, penColor As Color)
+    Sub DrawLineSegment(x1 As Integer, y1 As Integer, x2 As Integer, y2 As Integer) ', penColor As Color)
         Dim g As Graphics = DisplayPictureBox.CreateGraphics 'Me.CreateGraphics
-        Dim pen As New Pen(penColor)
+        'Use Global Pen
+        'Dim pen As New Pen(penColor)
+        'Pen.Width() = 5
+
         'Draw line segment
-        g.DrawLine(pen, x1, y1, x2, y2)
+        g.DrawLine(Me.mainPen, x1, y1, x2, y2)
         'free up resources
-        pen.Dispose()
+        'pen.Dispose()
         g.Dispose()
     End Sub
 
@@ -34,17 +39,18 @@ Public Class GraphicsForm
         'myPoint.X = 0
         'myPoint.Y = 0
 
-        Static penColor As Color
+        'Use Global
+        'Static penColor As Color
 
-        Me.Text = $"({e.X},{e.Y}) Button: {e.Button.ToString} Color: {penColor.ToString}"
+        Me.Text = $"({e.X},{e.Y}) Button: {e.Button.ToString} Color: {Me.mainPen.Color.ToString}"
         Select Case e.Button.ToString
             Case "Left"
-                DrawLineSegment(LastPoint(,, False).X, LastPoint(,, False).Y, e.X, e.Y, penColor)
+                DrawLineSegment(LastPoint(,, False).X, LastPoint(,, False).Y, e.X, e.Y)
             Case "Right"
 
             Case "Middle"
                 ColorDialog.ShowDialog()
-                penColor = ColorDialog.Color
+                Me.mainPen.Color = ColorDialog.Color
             Case "None"
 
             Case Else
@@ -76,4 +82,29 @@ Public Class GraphicsForm
         'DisplayPictureBox.BackColor = SystemColors.Control
         DisplayPictureBox.Refresh()
     End Sub
+
+    Private Sub WidthToolStripTextBox() Handles PenWidthToolStripTextBox.LostFocus
+        Try
+            Me.mainPen.Width() = CSng(PenWidthToolStripTextBox.Text)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub ColorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ColorToolStripMenuItem.Click
+        ColorDialog.ShowDialog()
+        Me.mainPen.Color = ColorDialog.Color
+    End Sub
+
+    Sub DrawWave()
+        Dim degrees As Double
+        Dim angle As Double
+
+        degrees = (180 / System.Math.PI)
+
+
+        System.Math.Sin(1)
+
+    End Sub
+
 End Class
