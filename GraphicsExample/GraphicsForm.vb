@@ -1,6 +1,9 @@
 ﻿Option Explicit On
 Option Strict On
 
+Imports System.Math
+
+
 Public Class GraphicsForm
     'Global fields
     Dim mainPen As New Pen(Color.Black)
@@ -100,11 +103,24 @@ Public Class GraphicsForm
         Dim degrees As Double
         Dim angle As Double
 
-        degrees = (180 / System.Math.PI)
+        Dim div As Double = DisplayPictureBox.Width / 10
+        Dim maxX = DisplayPictureBox.Width / div
+        Dim plotPoint As Point
+        Dim offset As Integer = CInt(DisplayPictureBox.Height / 2)
+        Dim maxY As Double = DisplayPictureBox.Height
 
+        degrees = (180 / PI)
+        For i = 0 To maxX 'Step div
+            plotPoint.X = CInt(i)
+            plotPoint.Y = CInt(maxY * Sin(2 * PI * i))
+            DrawLineSegment(plotPoint.X, plotPoint.Y, LastPoint(,, False).X, LastPoint(,, False).Y)
+            LastPoint(plotPoint.X, plotPoint.Y)
+        Next
 
-        System.Math.Sin(1)
 
     End Sub
 
+    Private Sub DrawButton_Click(sender As Object, e As EventArgs) Handles DrawButton.Click
+        DrawWave()
+    End Sub
 End Class

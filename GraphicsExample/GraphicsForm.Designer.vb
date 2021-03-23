@@ -57,25 +57,25 @@ Partial Class GraphicsForm
         Me.ContextMenuStrip.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.ContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WidthToolStripMenuItem, Me.ColorToolStripMenuItem})
         Me.ContextMenuStrip.Name = "ContextMenuStrip"
-        Me.ContextMenuStrip.Size = New System.Drawing.Size(241, 101)
+        Me.ContextMenuStrip.Size = New System.Drawing.Size(107, 48)
         '
         'WidthToolStripMenuItem
         '
         Me.WidthToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PenWidthToolStripTextBox})
         Me.WidthToolStripMenuItem.Name = "WidthToolStripMenuItem"
-        Me.WidthToolStripMenuItem.Size = New System.Drawing.Size(240, 32)
+        Me.WidthToolStripMenuItem.Size = New System.Drawing.Size(106, 22)
         Me.WidthToolStripMenuItem.Text = "&Width"
         '
         'PenWidthToolStripTextBox
         '
         Me.PenWidthToolStripTextBox.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.PenWidthToolStripTextBox.Name = "PenWidthToolStripTextBox"
-        Me.PenWidthToolStripTextBox.Size = New System.Drawing.Size(100, 31)
+        Me.PenWidthToolStripTextBox.Size = New System.Drawing.Size(100, 23)
         '
         'ColorToolStripMenuItem
         '
         Me.ColorToolStripMenuItem.Name = "ColorToolStripMenuItem"
-        Me.ColorToolStripMenuItem.Size = New System.Drawing.Size(240, 32)
+        Me.ColorToolStripMenuItem.Size = New System.Drawing.Size(106, 22)
         Me.ColorToolStripMenuItem.Text = "&Color"
         '
         'DrawButton
