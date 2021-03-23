@@ -114,23 +114,17 @@ Public Class GraphicsForm
     End Sub
 
     Sub DrawWave()
-        Dim degrees As Double
-        Dim angle As Double
+        Dim _start As Point
+        Dim _end As Point
 
-        Dim div As Double = DisplayPictureBox.Width / 10
-        Dim maxX = DisplayPictureBox.Width / div
-        Dim plotPoint As Point
-        Dim offset As Integer = CInt(DisplayPictureBox.Height / 2)
-        Dim maxY As Double = DisplayPictureBox.Height
+        'offset amount
+        Dim yOffset As Single = CSng(DisplayPictureBox.Height / 2)
+        Me.g.TranslateTransform(0, yOffset)
 
-        degrees = (180 / PI)
-        'For i = 0 To maxX 'Step div
-        '    plotPoint.X = CInt(i)
-        '    plotPoint.Y = CInt(maxY * Sin(2 * PI * i))
-        '    DrawLineSegment(plotPoint.X, plotPoint.Y, LastPoint(,, False).X, LastPoint(,, False).Y)
-        '    LastPoint(plotPoint.X, plotPoint.Y)
-        'Next
+        _end.X = 100
+        _end.Y = 100
 
+        DrawLineSegment(_start, _end)
 
     End Sub
 
