@@ -2,6 +2,7 @@
 Option Strict On
 
 Imports System.Math
+Imports System.Threading.Thread
 
 
 Public Class GraphicsForm
@@ -76,7 +77,27 @@ Public Class GraphicsForm
 
     Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
         'TODO play shake sound
+        ShakeSound()
+        Shake()
         DisplayPictureBox.Refresh()
+    End Sub
+
+    Sub ShakeSound()
+        'https://freesound.org/
+        'play shake sound from project resources
+        My.Computer.Audio.Play(My.Resources.shaker, AudioPlayMode.Background)
+    End Sub
+
+    Sub Shake()
+        Dim moveAmount = 50
+
+        For i = 1 To 15
+            Me.Top += moveAmount
+            Me.Left += moveAmount
+            Sleep(100)
+            moveAmount *= -1
+        Next
+
     End Sub
 
     Private Sub WidthToolStripTextBox() Handles PenWidthToolStripTextBox.LostFocus
