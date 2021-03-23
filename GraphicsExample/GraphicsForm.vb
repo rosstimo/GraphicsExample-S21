@@ -5,84 +5,77 @@ Imports System.Math
 
 
 Public Class GraphicsForm
-    'Global fields
+
+    'Global fields for graphics object
+    Dim g As Graphics 'instantiated globally, associated with PictureBox control on me.Load event
     Dim mainPen As New Pen(Color.Black)
 
-    Private Sub GraphicsForm_Click(sender As Object, e As EventArgs) Handles Me.Click
-        'DrawLine()
-        'DrawCircle()
-        'LastPoint(100, 100)
-        'LastPoint(10, 10)
-        'LastPoint(3, 77)
-        'Me.Text = CStr(LastPoint(,, False).Y)
-        'Me.Text = CStr(LastPoint().Y)
-        'Console.WriteLine()
+    'point tracking
+    Dim lastPoint As Point
 
-
-    End Sub
-
-    Sub DrawLineSegment(x1 As Integer, y1 As Integer, x2 As Integer, y2 As Integer) ', penColor As Color)
-        Dim g As Graphics = DisplayPictureBox.CreateGraphics 'Me.CreateGraphics
-        'Use Global Pen
-        'Dim pen As New Pen(penColor)
-        'Pen.Width() = 5
-
-        'Draw line segment
-        g.DrawLine(Me.mainPen, x1, y1, x2, y2)
-        'free up resources
-        'pen.Dispose()
-        g.Dispose()
+    Sub DrawLineSegment(startPoint As Point, endPoint As Point)
+        g.DrawLine(Me.mainPen, startPoint, endPoint)
     End Sub
 
     Private Sub DisplayPictureBox_MouseDown(sender As Object, e As MouseEventArgs) Handles DisplayPictureBox.MouseDown, DisplayPictureBox.MouseMove
-        'Static oldX As Integer
-        'Static oldY As Integer
 
-        'Dim myPoint As Point
-        'myPoint.X = 0
-        'myPoint.Y = 0
-
-        'Use Global
-        'Static penColor As Color
-
-        Me.Text = $"({e.X},{e.Y}) Button: {e.Button.ToString} Color: {Me.mainPen.Color.ToString}"
+        'action selection based on mouse button
         Select Case e.Button.ToString
             Case "Left"
-                DrawLineSegment(LastPoint(,, False).X, LastPoint(,, False).Y, e.X, e.Y)
+                DrawLineSegment(lastPoint, e.Location)
             Case "Right"
-
+                'Not used due to context menu implementation
             Case "Middle"
                 ColorDialog.ShowDialog()
                 Me.mainPen.Color = ColorDialog.Color
             Case "None"
-
-            Case Else
-                MsgBox("It Got Weird")
+                'TODO
         End Select
-        'oldX = e.X
-        'oldY = e.Y
-        LastPoint(e.X, e.Y)
+
+        'Update info
+        Me.Text = $"({e.X},{e.Y}) Button: {e.Button.ToString} Color: {Me.mainPen.Color.ToString}"
+
+        'update last known point
+        Me.lastPoint.X = e.X
+        Me.lastPoint.Y = e.Y
 
     End Sub
 
-    Function LastPoint(Optional x As Integer = 0, Optional y As Integer = 0, Optional update As Boolean = True) As Point
-        Static _lastPoint As Point
+    'needs testing  with global
+    Sub UpdateParms()
+        'g.PageUnit = GraphicsUnit.Pixel
+        'g.PixelOffsetMode = Drawing2D.PixelOffsetMode.HighSpeed
 
-        If update = True Then
-            _lastPoint.X = x
-            _lastPoint.Y = y
-        End If
+        'Scale 
+        'This will be the width of the scaled graphics object 
+        Dim xMax As Single = 360
+        Dim xScale As Single = CSng(DisplayPictureBox.Width / xMax)
 
-        Return _lastPoint
-    End Function
+        'This will be the height of the scaled graphics object 
+        Dim yMax As Single = 100
+        'half the height in pixels is to 100 units
+        '100 up, 100 down
+        Dim yScale As Single = CSng(((DisplayPictureBox.Height) / 2) / yMax)
+        Me.g.ScaleTransform(xScale, yScale) 'apply scale
+
+        'Offset 
+        'y=0 to vertical center
+        Dim yOffset As Single = CSng(yMax)
+        'left edge
+        Dim xOffset As Single
+        Me.g.TranslateTransform(xOffset, yOffset)
+
+        'Rotation 0
+        Dim rotation As Single
+        Me.g.RotateTransform(rotation)
+    End Sub
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
         Me.Close()
     End Sub
 
     Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
-        'DisplayPictureBox.BackColor = Color.LightBlue
-        'DisplayPictureBox.BackColor = SystemColors.Control
+        'TODO play shake sound
         DisplayPictureBox.Refresh()
     End Sub
 
@@ -110,17 +103,21 @@ Public Class GraphicsForm
         Dim maxY As Double = DisplayPictureBox.Height
 
         degrees = (180 / PI)
-        For i = 0 To maxX 'Step div
-            plotPoint.X = CInt(i)
-            plotPoint.Y = CInt(maxY * Sin(2 * PI * i))
-            DrawLineSegment(plotPoint.X, plotPoint.Y, LastPoint(,, False).X, LastPoint(,, False).Y)
-            LastPoint(plotPoint.X, plotPoint.Y)
-        Next
+        'For i = 0 To maxX 'Step div
+        '    plotPoint.X = CInt(i)
+        '    plotPoint.Y = CInt(maxY * Sin(2 * PI * i))
+        '    DrawLineSegment(plotPoint.X, plotPoint.Y, LastPoint(,, False).X, LastPoint(,, False).Y)
+        '    LastPoint(plotPoint.X, plotPoint.Y)
+        'Next
 
 
     End Sub
 
     Private Sub DrawButton_Click(sender As Object, e As EventArgs) Handles DrawButton.Click
         DrawWave()
+    End Sub
+
+    Private Sub GraphicsForm_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Me.g = Me.DisplayPictureBox.CreateGraphics
     End Sub
 End Class
